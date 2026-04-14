@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for you 🌿</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #5E6C5B;
+    --cream: #F4EFE6;
+    --sky: #D6E0E2;
+    --midnight: #162A2C;
+    --storm: #686867;
+    --cloud: #FEFCF6;
+    --blush: #E8C4A0;
+    --rose: #C4907A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── DECORATIVE BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 15% 20%, rgba(94,108,91,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 85% 80%, rgba(214,224,226,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 60% 10%, rgba(232,196,160,0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Floating petals */
+  .petal {
+    position: fixed;
+    width: 8px;
+    height: 12px;
+    border-radius: 50% 0 50% 0;
+    opacity: 0;
+    animation: falling linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .petal:nth-child(1)  { left: 5%;  background: rgba(196,144,122,0.4); animation-duration: 8s;  animation-delay: 0s;   width: 6px;  height: 9px; }
+  .petal:nth-child(2)  { left: 15%; background: rgba(94,108,91,0.25);  animation-duration: 11s; animation-delay: 2s;   width: 9px;  height: 13px; }
+  .petal:nth-child(3)  { left: 28%; background: rgba(232,196,160,0.5); animation-duration: 9s;  animation-delay: 1s;   }
+  .petal:nth-child(4)  { left: 42%; background: rgba(196,144,122,0.3); animation-duration: 13s; animation-delay: 4s;   width: 5px;  height: 8px; }
+  .petal:nth-child(5)  { left: 55%; background: rgba(94,108,91,0.3);   animation-duration: 10s; animation-delay: 0.5s; width: 10px; height: 14px; }
+  .petal:nth-child(6)  { left: 68%; background: rgba(214,224,226,0.6); animation-duration: 12s; animation-delay: 3s;   }
+  .petal:nth-child(7)  { left: 78%; background: rgba(196,144,122,0.35);animation-duration: 7s;  animation-delay: 1.5s; width: 7px;  height: 11px; }
+  .petal:nth-child(8)  { left: 88%; background: rgba(232,196,160,0.4); animation-duration: 14s; animation-delay: 5s;   }
+  .petal:nth-child(9)  { left: 35%; background: rgba(94,108,91,0.2);   animation-duration: 9s;  animation-delay: 6s;   width: 5px; height: 8px; }
+  .petal:nth-child(10) { left: 92%; background: rgba(196,144,122,0.3); animation-duration: 11s; animation-delay: 2.5s; }
+
+  @keyframes falling {
+    0%   { transform: translateY(-20px) rotate(0deg);   opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.7; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* ── PASSWORD SCREEN ── */
+  #lock-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    background: var(--cream);
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #lock-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .lock-card {
+    background: var(--cloud);
+    border: 1px solid rgba(94,108,91,0.2);
+    border-radius: 2px;
+    padding: 56px 48px;
+    text-align: center;
+    max-width: 380px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 4px 40px rgba(22,42,44,0.08), 0 1px 8px rgba(22,42,44,0.04);
+  }
+
+  /* lace-like border on the card */
+  .lock-card::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px dashed rgba(94,108,91,0.2);
+    border-radius: 1px;
+    pointer-events: none;
+  }
+
+  /* corner flourish */
+  .lock-card::after {
+    content: '✦';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--cream);
+    padding: 0 8px;
+    color: var(--forest);
+    font-size: 18px;
+  }
+
+  .lock-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--storm);
+    margin-bottom: 20px;
+  }
+
+  .lock-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--midnight);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .lock-subtitle {
+    font-size: 1rem;
+    color: var(--storm);
+    font-style: italic;
+    margin-bottom: 36px;
+    line-height: 1.5;
+  }
+
+  .pw-wrap {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .pw-input {
+    width: 100%;
+    padding: 14px 20px;
+    border: 1px solid rgba(94,108,91,0.3);
+    background: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--midnight);
+    outline: none;
+    border-radius: 1px;
+    text-align: center;
+    letter-spacing: 0.1em;
+    transition: border-color 0.3s;
+  }
+  .pw-input:focus { border-color: var(--forest); }
+  .pw-input::placeholder { color: rgba(104,104,103,0.4); font-style: italic; }
+
+  .pw-input.shake {
+    animation: shake 0.4s ease;
+    border-color: var(--rose);
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  .pw-btn {
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.15s;
+    border-radius: 1px;
+  }
+  .pw-btn:hover { background: var(--midnight); transform: translateY(-1px); }
+
+  .pw-error {
+    font-size: 0.85rem;
+    color: var(--rose);
+    font-style: italic;
+    min-height: 20px;
+    margin-top: 10px;
+  }
+
+  .lock-deco {
+    margin-top: 28px;
+    font-size: 0.85rem;
+    color: rgba(104,104,103,0.5);
+    font-style: italic;
+  }
+
+  /* ── MAIN CONTENT ── */
+  #main {
+    position: relative;
+    z-index: 2;
+    display: none;
+    animation: fadeIn 1.2s ease forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 64px 24px 32px;
+    text-align: center;
+    position: relative;
+  }
+
+  .header-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--forest);
+    margin-bottom: 16px;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    color: var(--midnight);
+    line-height: 1.1;
+    margin-bottom: 12px;
+    animation: fadeUp 0.8s ease 0.4s both;
+  }
+
+  .header-sub {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--storm);
+    font-style: italic;
+    max-width: 420px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+    animation: fadeUp 0.8s ease 0.6s both;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 300px;
+    margin: 0 auto 48px;
+    animation: fadeUp 0.8s ease 0.7s both;
+  }
+  .divider-line { flex: 1; height: 1px; background: rgba(94,108,91,0.25); }
+  .divider-icon { color: var(--forest); font-size: 14px; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESTAURANT CARDS ── */
+  .cards-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .section-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--forest);
+    text-align: center;
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s ease 0.8s both;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--cloud);
+    border: 1px solid rgba(94,108,91,0.15);
+    border-radius: 2px;
+    padding: 32px 28px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeUp 0.8s ease both;
+    overflow: hidden;
+  }
+
+  .card:nth-child(1) { animation-delay: 0.9s; }
+  .card:nth-child(2) { animation-delay: 1.0s; }
+  .card:nth-child(3) { animation-delay: 1.1s; }
+  .card:nth-child(4) { animation-delay: 1.2s; }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(94,108,91,0.04) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card:hover::before { opacity: 1; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(22,42,44,0.1); }
+
+  /* card color accent bar */
+  .card-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .card:nth-child(1) .card-bar { background: linear-gradient(90deg, var(--forest), var(--sky)); }
+  .card:nth-child(2) .card-bar { background: linear-gradient(90deg, var(--rose), var(--blush)); }
+  .card:nth-child(3) .card-bar { background: linear-gradient(90deg, var(--midnight), var(--forest)); }
+  .card:nth-child(4) .card-bar { background: linear-gradient(90deg, var(--blush), var(--sky)); }
+
+  .card-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--forest);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-tag::before { content: '✦'; font-size: 7px; }
+
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--midnight);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .card-addr {
+    font-size: 0.88rem;
+    color: var(--storm);
+    font-style: italic;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .card-dishes {
+    border-top: 1px solid rgba(94,108,91,0.12);
+    padding-top: 16px;
+    display: none; /* toggled */
+  }
+  .card-dishes.open { display: block; }
+
+  .dish-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .dish-list li {
+    font-size: 0.88rem;
+    color: var(--storm);
+    padding-left: 12px;
+    position: relative;
+    line-height: 1.4;
+  }
+  .dish-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--forest);
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--forest);
+    text-decoration: none;
+    margin-top: 8px;
+    transition: gap 0.2s;
+  }
+  .card-link:hover { gap: 10px; }
+  .card-link::after { content: '→'; }
+
+  .peek-btn {
+    background: none;
+    border: 1px solid rgba(94,108,91,0.3);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--forest);
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 1px;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .peek-btn:hover { background: var(--forest); color: var(--cream); }
+
+  /* ── FOOTER NOTE ── */
+  .footer {
+    text-align: center;
+    padding: 20px 24px 60px;
+    position: relative;
+  }
+
+  .footer-heart {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    animation: pulse 2s ease infinite;
+    display: block;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+
+  .footer-text {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--storm);
+  }
+
+  /* ── PICK OVERLAY (when you tap a card) ── */
+  .picked-banner {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--forest);
+    color: var(--cream);
+    padding: 14px 28px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    border-radius: 1px;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 50;
+    white-space: nowrap;
+    box-shadow: 0 4px 24px rgba(22,42,44,0.2);
+    pointer-events: none;
+  }
+  .picked-banner.show { transform: translateX(-50%) translateY(0); }
+
+  /* sparkle burst on card click */
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 200;
+    font-size: 20px;
+    animation: burst 0.7s ease forwards;
+  }
+  @keyframes burst {
+    0%   { opacity: 1; transform: scale(0) rotate(0deg); }
+    50%  { opacity: 1; transform: scale(1.3) rotate(180deg); }
+    100% { opacity: 0; transform: scale(0.5) rotate(360deg) translateY(-30px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- floating petals -->
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+<div class="petal"></div>
+
+<!-- PASSWORD SCREEN -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <p class="lock-eyebrow">private & cute</p>
+    <h1 class="lock-title">you found it ♡</h1>
+    <p class="lock-subtitle">enter the password to peek inside</p>
+    <div class="pw-wrap">
+      <input class="pw-input" id="pw-input" type="password" placeholder="shhh, type it here…" autocomplete="off" />
+    </div>
+    <button class="pw-btn" onclick="checkPw()">open ✦</button>
+    <p class="pw-error" id="pw-error"></p>
+    <p class="lock-deco">made with love 🌿</p>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+  <header class="header">
+    <p class="header-eyebrow">friday dinner · atlanta</p>
+    <h1 class="header-title">where should<br>we go?</h1>
+    <p class="header-sub">a little menu of options, just for you — pick whichever one makes you smile ♡</p>
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-icon">✦</span>
+      <div class="divider-line"></div>
+    </div>
+  </header>
+
+  <section class="cards-section">
+    <p class="section-label">four lovely options</p>
+    <div class="cards-grid">
+
+      <!-- Little Bear -->
+      <div class="card" id="card-0">
+        <div class="card-bar"></div>
+        <p class="card-tag">contemporary american</p>
+        <h2 class="card-name">Little Bear</h2>
+        <p class="card-addr">71-A Georgia Ave. SE<br>Atlanta, GA 30312</p>
+        <button class="peek-btn" onclick="toggleDishes(0)">peek at the menu ↓</button>
+        <div class="card-dishes" id="dishes-0">
+          <ul class="dish-list">
+            <li>Trout Sayadieh — scallion congee, laban, tahini, baharat</li>
+            <li>Chicken Satay — kecap manis, pecan satay, greens</li>
+            <li>Beet Cream Custard — numbing pecan granola, carrot jam</li>
+            <li>Coley's Galette — strawberry, apple, peppercorn sorbet</li>
+            <li>Dealer's Choice — 4-course prix fixe for $75 ✨</li>
+          </ul>
+          <a class="card-link" href="https://littlebearatl.com/" target="_blank">visit their site</a>
+        </div>
+      </div>
+
+      <!-- Superica -->
+      <div class="card" id="card-1">
+        <div class="card-bar"></div>
+        <p class="card-tag">tex-mex</p>
+        <h2 class="card-name">Superica</h2>
+        <p class="card-addr">99 Krog St.<br>Atlanta, GA 30307</p>
+        <button class="peek-btn" onclick="toggleDishes(1)">peek at the menu ↓</button>
+        <div class="card-dishes" id="dishes-1">
+          <ul class="dish-list">
+            <li>Queso Fundido — skillet broiled, just-made flour tortillas</li>
+            <li>Tacos Al Carbón — chicken or steak, smoked onions</li>
+            <li>Carne Asada — 14oz ribeye, wood grilled, $45</li>
+            <li>Pork Belly Carnitas — Superica classic with guava glaze</li>
+            <li>Superita Margarita — Corazon Reposado, up</li>
+          </ul>
+          <a class="card-link" href="https://superica.com/" target="_blank">visit their site</a>
+        </div>
+      </div>
+
+      <!-- Miller Union -->
+      <div class="card" id="card-2">
+        <div class="card-bar"></div>
+        <p class="card-tag">southern american</p>
+        <h2 class="card-name">Miller Union</h2>
+        <p class="card-addr">999 Brady Ave. NW<br>Atlanta, GA 30318</p>
+        <button class="peek-btn" onclick="toggleDishes(2)">peek at the menu ↓</button>
+        <div class="card-dishes" id="dishes-2">
+          <ul class="dish-list">
+            <li>Farm egg baked in celery cream with grilled bread</li>
+            <li>Cornmeal fried oysters — butternut squash, arugula, parmesan</li>
+            <li>Poulet Rouge — ricotta dumplings, english peas, parmesan</li>
+            <li>Grass-fed filet mignon — brussels, turnip, green tahini, $49</li>
+            <li>Mushroom bolognese — pappardelle, spring peas, feta</li>
+          </ul>
+          <a class="card-link" href="https://www.millerunion.com/" target="_blank">visit their site</a>
+        </div>
+      </div>
+
+      <!-- Delbar -->
+      <div class="card" id="card-3">
+        <div class="card-bar"></div>
+        <p class="card-tag">persian · middle eastern</p>
+        <h2 class="card-name">Delbar</h2>
+        <p class="card-addr">870 Inman Village Pkwy. NE<br>Atlanta, GA 30307</p>
+        <button class="peek-btn" onclick="toggleDishes(3)">peek at the menu ↓</button>
+        <div class="card-dishes" id="dishes-3">
+          <ul class="dish-list">
+            <li>Smoked Chilean Bass — saffron honey, cherrywood, pickles</li>
+            <li>Lamb Neck — braised, saffron, turmeric, cinnamon</li>
+            <li>Shishlik — lamb chops, rosewater, saffron, honey, lime</li>
+            <li>Whole Stuffed Branzino — pomegranate, walnut, citrus</li>
+            <li>Kashk Bademjoon — fried eggplant, onion, mint</li>
+          </ul>
+          <a class="card-link" href="https://www.delbaratl.com/" target="_blank">visit their site</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span class="footer-heart">🌿</span>
+    <p class="footer-text">whichever you pick, it's going to be a perfect night ♡</p>
+  </footer>
+</div>
+
+<!-- Picked banner -->
+<div class="picked-banner" id="picked-banner"></div>
+
+<script>
+  // password check
+  function checkPw() {
+    const input = document.getElementById('pw-input');
+    const error = document.getElementById('pw-error');
+    if (input.value === 'prettygirl222') {
+      document.getElementById('lock-screen').classList.add('hidden');
+      setTimeout(() => {
+        document.getElementById('main').style.display = 'block';
+      }, 800);
+    } else {
+      error.textContent = 'hmm, try again lovely ♡';
+      input.classList.remove('shake');
+      void input.offsetWidth;
+      input.classList.add('shake');
+      setTimeout(() => input.classList.remove('shake'), 500);
+    }
+  }
+
+  // enter key on password
+  document.getElementById('pw-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPw();
+  });
+
+  // toggle dish list
+  function toggleDishes(i) {
+    const el = document.getElementById('dishes-' + i);
+    const btn = el.previousElementSibling;
+    const isOpen = el.classList.contains('open');
+    // close all
+    document.querySelectorAll('.card-dishes').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.peek-btn').forEach(b => b.textContent = 'peek at the menu ↓');
+    if (!isOpen) {
+      el.classList.add('open');
+      btn.textContent = 'close the menu ↑';
+    }
+  }
+
+  // sparkle on card click
+  document.querySelectorAll('.card').forEach((card, i) => {
+    card.addEventListener('click', (e) => {
+      if (e.target.classList.contains('peek-btn') || e.target.classList.contains('card-link')) return;
+      spawnSparkle(e.clientX, e.clientY);
+    });
+  });
+
+  function spawnSparkle(x, y) {
+    const icons = ['✦','✿','♡','✾','❀'];
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'sparkle';
+        el.textContent = icons[Math.floor(Math.random() * icons.length)];
+        el.style.left = (x + (Math.random()-0.5)*60) + 'px';
+        el.style.top  = (y + (Math.random()-0.5)*60) + 'px';
+        el.style.color = ['#5E6C5B','#C4907A','#162A2C','#D6E0E2','#E8C4A0'][i];
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 800);
+      }, i * 60);
+    }
+  }
+</script>
+</body>
+</html>
