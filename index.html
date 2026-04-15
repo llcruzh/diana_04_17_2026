@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -422,6 +425,8 @@
     border-radius: 1px;
     width: 100%;
     margin-top: 8px;
+    position: relative;
+    z-index: 10;
   }
   .peek-btn:hover { background: var(--forest); color: var(--cream); }
 
@@ -538,7 +543,7 @@
         <p class="card-tag">contemporary american</p>
         <h2 class="card-name">Little Bear</h2>
         <p class="card-addr">71-A Georgia Ave. SE<br>Atlanta, GA 30312</p>
-        <button class="peek-btn" onclick="toggleDishes(0)">peek at the menu ↓</button>
+        <button class="peek-btn" onclick="toggleDishes(0, event)">peek at the menu ↓</button>
         <div class="card-dishes" id="dishes-0">
           <ul class="dish-list">
             <li>Trout Sayadieh — scallion congee, laban, tahini, baharat</li>
@@ -557,7 +562,7 @@
         <p class="card-tag">tex-mex</p>
         <h2 class="card-name">Superica</h2>
         <p class="card-addr">99 Krog St.<br>Atlanta, GA 30307</p>
-        <button class="peek-btn" onclick="toggleDishes(1)">peek at the menu ↓</button>
+        <button class="peek-btn" onclick="toggleDishes(1, event)">peek at the menu ↓</button>
         <div class="card-dishes" id="dishes-1">
           <ul class="dish-list">
             <li>Queso Fundido — skillet broiled, just-made flour tortillas</li>
@@ -576,7 +581,7 @@
         <p class="card-tag">southern american</p>
         <h2 class="card-name">Miller Union</h2>
         <p class="card-addr">999 Brady Ave. NW<br>Atlanta, GA 30318</p>
-        <button class="peek-btn" onclick="toggleDishes(2)">peek at the menu ↓</button>
+        <button class="peek-btn" onclick="toggleDishes(2, event)">peek at the menu ↓</button>
         <div class="card-dishes" id="dishes-2">
           <ul class="dish-list">
             <li>Farm egg baked in celery cream with grilled bread</li>
@@ -595,7 +600,7 @@
         <p class="card-tag">persian · middle eastern</p>
         <h2 class="card-name">Delbar</h2>
         <p class="card-addr">870 Inman Village Pkwy. NE<br>Atlanta, GA 30307</p>
-        <button class="peek-btn" onclick="toggleDishes(3)">peek at the menu ↓</button>
+        <button class="peek-btn" onclick="toggleDishes(3, event)">peek at the menu ↓</button>
         <div class="card-dishes" id="dishes-3">
           <ul class="dish-list">
             <li>Smoked Chilean Bass — saffron honey, cherrywood, pickles</li>
@@ -645,11 +650,11 @@
   });
 
   // toggle dish list
-  function toggleDishes(i) {
+  function toggleDishes(i, event) {
+    event.stopPropagation();
     const el = document.getElementById('dishes-' + i);
     const btn = el.previousElementSibling;
     const isOpen = el.classList.contains('open');
-    // close all
     document.querySelectorAll('.card-dishes').forEach(d => d.classList.remove('open'));
     document.querySelectorAll('.peek-btn').forEach(b => b.textContent = 'peek at the menu ↓');
     if (!isOpen) {
